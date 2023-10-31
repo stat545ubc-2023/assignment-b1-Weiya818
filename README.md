@@ -1,8 +1,9 @@
 
-# STAT 545B Assignment B-1 Making a Function _(Weiya Zhu)_
+# STAT 545B Assignment B-1 _(Weiya Zhu)_
 
 ## Assignment Description
- * This assignment is about making a function and fortifying it. The function should not be too complicated. The function need not be “serious”, but shouldn’t be nonsense.
+ * This assignment is about making a function in R, documenting it, and testing it.
+ * The function should not be too complicated. The function need not be “serious”, but shouldn’t be nonsense.
    
 ## How to Engage in the Project
   * Git clone the github repository to the local R studio
