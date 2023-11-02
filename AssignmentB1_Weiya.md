@@ -48,7 +48,10 @@ library(testthat)
     ##     matches
 
 The function I made is a density_plot function since I used to plot many
-density plot in Mini Data Analysis Project.
+density plot in Mini Data Analysis Project. I filtered out all possible
+NA value in x first. Then I set two pre-condition for my function.
+Firstly, x should be a continuous numeric value and fill should be a
+categorical value in order to make the density plot informative.
 
 ``` r
 density_plot <- function(data, x, fill,x_axis_name) {
@@ -61,7 +64,7 @@ density_plot <- function(data, x, fill,x_axis_name) {
       stop('Make sure fill is a categorical variable!')
     }
 
-  ggplot(data = data, aes(x = x)) +
+  ggplot(data = data, aes(x = x_val)) +
     geom_density(aes(fill = fill), alpha = 0.5) +
     labs(title = "Density Plot", x = x_axis_name, y = "Density") +
     scale_x_log10() +
@@ -83,7 +86,7 @@ density_plot <- function(data, x, fill, x_axis_name) {
       stop('Make sure fill is a categorical variable!')
     }
 
-  ggplot(data = data, aes(x = x)) +
+  ggplot(data = data, aes(x = x_val)) +
     geom_density(aes(fill = fill), alpha = 0.5) +
     labs(title = "Density Plot", x = x_axis_name, y = "Density") +
     scale_x_log10() +
@@ -91,10 +94,11 @@ density_plot <- function(data, x, fill, x_axis_name) {
 }
 #' 1. density_plot
 #' 2. @description The density_plot function creates a density plot wiht alpha=0.5 based on the given inputs, dataset, x, and fill values, using ggplot2.
-#'  This function can be used as a visualization tool to represent the distribution of a continuous numeric variable (x) across multiple fills.
-#' 3.@param data The input dataset
+#'  This function can be used as a visualization tool to represent the distribution of a continuous numeric variable (x) across multiple fills(categorical values).
+#' 3.@param data The input dataset 
 #' @param x A continuous numerical variable in the dataset, it is one of the varibale being investigated
 #' @param fill A variable in the dataset, it is one of the varibale being investigated
+#' @param x_axis_name This is the name of the x-axis given by the user who uses this function
 #' 4.@return A density plot with value of x in x-axis across different fills and denisity as the y-axis
 ```
 
@@ -147,13 +151,13 @@ Running examples to check whether the function is working as expected.
 **Test 1**
 
 ``` r
-test_that("Test 1:Function creates a ggplot",{
-  epected_val <- density_plot(filtered_dataset, filtered_dataset$diameter, filtered_dataset$root_barrier, x_axis_name="Diameter")
-  expect_is(epected_val,"ggplot")
+test_that("Test 1: Function creates a ggplot with a custom x-axis name", {
+  expected_val <- density_plot(filtered_dataset, filtered_dataset$diameter, filtered_dataset$root_barrier, x_axis_name = "Diameter")
+  expect_is(expected_val, "ggplot")
 })
 ```
 
-    ## Test passed 😀
+    ## Test passed 🎉
 
 **Test 2**
 
@@ -163,17 +167,17 @@ test_that("Test 2: Function can only have continuous numerical x values", {
 })
 ```
 
-    ## Test passed 🥳
+    ## Test passed 😀
 
 **Test 3**
 
 ``` r
-test_that("Test 3: Function only takes four inputs", {
+test_that("Test 3: Function only takes four input variable", {
   expect_error(density_plot(filtered_dataset, filtered_dataset$root_barrier, filtered_dataset$diameter, filtered_dataset$height_range_id, x_axis_name="Diameter"))
 })
 ```
 
-    ## Test passed 🌈
+    ## Test passed 🥳
 
 **Test 4**
 
@@ -183,4 +187,4 @@ test_that("Test 4: Function can only have categorical fill values", {
 })
 ```
 
-    ## Test passed 😀
+    ## Test passed 🥳
