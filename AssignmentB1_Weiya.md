@@ -51,16 +51,19 @@ The function I made is a density_plot function since I used to plot many
 density plot in Mini Data Analysis Project.
 
 ``` r
-density_plot <- function(data, x, fill) {
+density_plot <- function(data, x, fill,x_axis_name) {
   #make sure there is no NA value
   x_val<- x[!is.na(x)]
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+    if (!is.factor(fill) && !is.character(fill)) {
+      stop('Make sure fill is a categorical variable!')
+    }
 
   ggplot(data = data, aes(x = x)) +
     geom_density(aes(fill = fill), alpha = 0.5) +
-    labs(title = "Density Plot", x = x, y = "Density") +
+    labs(title = "Density Plot", x = x_axis_name, y = "Density") +
     scale_x_log10() +
     theme_minimal()
 }
@@ -71,15 +74,18 @@ density_plot <- function(data, x, fill) {
 In this Exercise 2, I will document the function using roxygen2 tags
 
 ``` r
-density_plot <- function(data, x, fill) {
+density_plot <- function(data, x, fill, x_axis_name) {
   x_val<- x[!is.na(x)]
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+    if (!is.factor(fill) && !is.character(fill)) {
+      stop('Make sure fill is a categorical variable!')
+    }
 
   ggplot(data = data, aes(x = x)) +
     geom_density(aes(fill = fill), alpha = 0.5) +
-    labs(title = "Density Plot", x = x, y = "Density") +
+    labs(title = "Density Plot", x = x_axis_name, y = "Density") +
     scale_x_log10() +
     theme_minimal()
 }
@@ -105,7 +111,7 @@ filtered_dataset <- vancouver_trees %>%
   filter(diameter > 0)
 
 #call the density_plot function to plot a density plot, which represents the distribution of the tree diameter across different root_barrier. 
-density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_dataset$root_barrier)
+density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_dataset$root_barrier, x_axis_name="Diameter")
 ```
 
 ![](AssignmentB1_Weiya_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
@@ -114,11 +120,11 @@ density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_
 
 ``` r
 #Use the filter_dataset above to filter out the diameter column with diameter>0
-#Now, set the height_range_id column as a categorical column to make the graph more useful
+#Now, set the height_range_id column as a categorical column 
 filtered_dataset$height_range_id <- factor(filtered_dataset$height_range_id)
 
 #call the density_plot function to plot a density plot for diameter versus height_range_id, where the different height_range_id are shown as fills
-density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_dataset$height_range_id)
+density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_dataset$height_range_id, x_axis_name="Diameter")
 ```
 
 ![](AssignmentB1_Weiya_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
@@ -129,7 +135,7 @@ density_plot( data=filtered_dataset, x=filtered_dataset$diameter, fill=filtered_
 #call the density_plot function to plot a density plot for radius_mean versus the results of diagnosis. 
 #It is clear from the graph that when radius_mean ranges around 15, the density of the diagnosis B is extremely high,
 #whereas when the radius_mean ranges from 17-20, the density of the diagnosis M is very high.
-density_plot( data=cancer_sample, x=cancer_sample$radius_mean, fill=cancer_sample$diagnosis)
+density_plot( data=cancer_sample, x=cancer_sample$radius_mean, fill=cancer_sample$diagnosis, x_axis_name="radius_mean")
 ```
 
 ![](AssignmentB1_Weiya_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
@@ -142,29 +148,39 @@ Running examples to check whether the function is working as expected.
 
 ``` r
 test_that("Test 1:Function creates a ggplot",{
-  epected_val <- density_plot(filtered_dataset, filtered_dataset$diameter, filtered_dataset$root_barrier)
+  epected_val <- density_plot(filtered_dataset, filtered_dataset$diameter, filtered_dataset$root_barrier, x_axis_name="Diameter")
   expect_is(epected_val,"ggplot")
 })
 ```
 
-    ## Test passed 🥳
+    ## Test passed 😀
 
 **Test 2**
 
 ``` r
 test_that("Test 2: Function can only have continuous numerical x values", {
-  expect_error(density_plot(filtered_dataset, filtered_dataset$root_barrier, filtered_dataset$diameter))
-})
-```
-
-    ## Test passed 🥇
-
-**Test 3**
-
-``` r
-test_that("Test 3: Function only takes three inputs", {
-  expect_error(density_plot(filtered_dataset, filtered_dataset$root_barrier, filtered_dataset$diameter, filtered_dataset$height_range_id))
+  expect_error(density_plot(filtered_dataset, filtered_dataset$root_barrier, filtered_dataset$diameter, x_axis_name="Diameter"))
 })
 ```
 
     ## Test passed 🥳
+
+**Test 3**
+
+``` r
+test_that("Test 3: Function only takes four inputs", {
+  expect_error(density_plot(filtered_dataset, filtered_dataset$root_barrier, filtered_dataset$diameter, filtered_dataset$height_range_id, x_axis_name="Diameter"))
+})
+```
+
+    ## Test passed 🌈
+
+**Test 4**
+
+``` r
+test_that("Test 4: Function can only have categorical fill values", {
+  expect_error(density_plot( data=cancer_sample, x=cancer_sample$radius_mean, fill=cancer_sample$area_mean, x_axis_name="radius_mean"))
+})
+```
+
+    ## Test passed 😀
