@@ -21,9 +21,11 @@ I filtered out all possible NA value in x first. Then I set two pre-condition fo
 density_plot <- function(data, x, fill,x_axis_name) {
   #make sure there is no NA value
   x_val<- x[!is.na(x)]
+    #make sure x is a continuous numeric variable
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+  #make sure fill is a categorical variable
     if (!is.factor(fill) && !is.character(fill)) {
       stop('Make sure fill is a categorical variable!')
     }
@@ -41,10 +43,13 @@ density_plot <- function(data, x, fill,x_axis_name) {
 In this Exercise 2, I will document the function using roxygen2 tags
 ```{r}
 density_plot <- function(data, x, fill, x_axis_name) {
+   #make sure there is no NA value
   x_val<- x[!is.na(x)]
+   #make sure x is a continuous numeric variable
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+  #make sure fill is a categorical variable
     if (!is.factor(fill) && !is.character(fill)) {
       stop('Make sure fill is a categorical variable!')
     }

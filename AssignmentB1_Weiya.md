@@ -57,9 +57,11 @@ categorical value in order to make the density plot informative.
 density_plot <- function(data, x, fill,x_axis_name) {
   #make sure there is no NA value
   x_val<- x[!is.na(x)]
+    #make sure x is a continuous numeric variable
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+  #make sure fill is a categorical variable
     if (!is.factor(fill) && !is.character(fill)) {
       stop('Make sure fill is a categorical variable!')
     }
@@ -78,10 +80,13 @@ In this Exercise 2, I will document the function using roxygen2 tags
 
 ``` r
 density_plot <- function(data, x, fill, x_axis_name) {
+   #make sure there is no NA value
   x_val<- x[!is.na(x)]
+   #make sure x is a continuous numeric variable
     if(!is.numeric(x_val)) {
       stop('Please make sure x is a numeric vlaue')
     }
+  #make sure fill is a categorical variable
     if (!is.factor(fill) && !is.character(fill)) {
       stop('Make sure fill is a categorical variable!')
     }
@@ -157,7 +162,7 @@ test_that("Test 1: Function creates a ggplot with a custom x-axis name", {
 })
 ```
 
-    ## Test passed 🎉
+    ## Test passed 🌈
 
 **Test 2**
 
@@ -167,7 +172,7 @@ test_that("Test 2: Function can only have continuous numerical x values", {
 })
 ```
 
-    ## Test passed 😀
+    ## Test passed 🎊
 
 **Test 3**
 
@@ -177,7 +182,7 @@ test_that("Test 3: Function only takes four input variable", {
 })
 ```
 
-    ## Test passed 🥳
+    ## Test passed 😸
 
 **Test 4**
 
@@ -187,4 +192,4 @@ test_that("Test 4: Function can only have categorical fill values", {
 })
 ```
 
-    ## Test passed 🥳
+    ## Test passed 🌈
